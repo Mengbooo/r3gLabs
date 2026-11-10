@@ -4,9 +4,10 @@
   --mute: #8a8b91;
   --line: rgba(24, 29, 38, 0.09);
   --night: #060709;
-  --edge: 12px;
+  /* Viewport frame and mobile breakpoint mirror r3gIndex/src/styles/site.css. */
+  --edge: 15px;
   --inset: 26px;
-  --radius: 32px;
+  --frame-radius: 34px;
   --serif: 'Redaction 35', Georgia, serif;
   --nav-item-size: 14px;
   --nav-closed-width: 145px;
@@ -89,9 +90,9 @@ a:focus-visible,
 .window-edge {
   position: fixed;
   inset: var(--edge);
-  border-radius: var(--radius);
+  border-radius: var(--frame-radius);
   box-shadow: 0 0 0 50px var(--night);
-  z-index: 50;
+  z-index: 90;
   pointer-events: none;
 }
 #gl {
@@ -530,7 +531,7 @@ body.hov #label {
 #page {
   position: fixed;
   inset: var(--edge);
-  border-radius: var(--radius);
+  border-radius: var(--frame-radius);
   z-index: 8;
   overflow: hidden;
   background: var(--bg);
@@ -586,12 +587,15 @@ body.fallback .index-category {
 body.fallback #mode {
   display: none;
 }
-@media (max-width: 760px) {
+@media (max-width: 700px) {
   :root {
     --nav-item-size: 11px;
     --edge: 8px;
     --inset: 18px;
-    --radius: 24px;
+    --frame-radius: 23px;
+    --nav-curve: 32px;
+    --nav-join-radius: 23px;
+    --nav-closed-width: 116px;
   }
   .nav-group {
     gap: 6px;
@@ -652,10 +656,6 @@ body.fallback #mode {
   }
 }
 @media (max-width: 380px) {
-  :root {
-    --nav-curve: 60px;
-    --nav-logo-clearance: 64px;
-  }
   .index-category {
     display: none;
   }

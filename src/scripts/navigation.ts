@@ -67,11 +67,14 @@ export function initializeNavigation(nav: HTMLElement): void {
     const lift = extension?.getBoundingClientRect().height || 0,
       depth = 34 + lift;
     const radius = Math.min(
-      number('--radius'),
+      number('--frame-radius'),
       Math.max(0, width - right - inset - join),
     );
+    // The toolbar stays 34px deep; frame fillets are 34px / 23px across breakpoints.
+    // Morph only once there is no vertical segment between the two circular joins.
+    const blendHeight = Math.max(0.001, radius + join - 34);
     let upper, shoulder;
-    if (lift >= radius && radius > 0) {
+    if (lift >= blendHeight && radius > 0) {
       upper = `H${p(width - radius)} A${p(radius)} ${p(radius)} 0 0 0 ${p(width)} ${p(depth - radius)} V${p(join)}`;
       shoulder = `C${p(width)} ${p(control)} ${p(width + control)} 0 ${p(width + join)} 0`;
     } else if (lift > 0.001 && radius > 0) {
@@ -80,7 +83,7 @@ export function initializeNavigation(nav: HTMLElement): void {
       // no little outward knot where the old corner met the bottom fillet.
       const k = 0.552284749831,
         split = radius / (radius + join),
-        blend = lift / radius;
+        blend = lift / blendHeight;
       const lerp = (a: Point, b: Point, t: number): Point => [
         a[0] + (b[0] - a[0]) * t,
         a[1] + (b[1] - a[1]) * t,
@@ -98,11 +101,11 @@ export function initializeNavigation(nav: HTMLElement): void {
       ];
       const r = [lerp(q[0], q[1], split), lerp(q[1], q[2], split)],
         seam = lerp(r[0], r[1], split);
-      const start = lerp(idle[0], [width - radius, 34 + radius], blend);
+      const start = lerp(idle[0], [width - radius, join + radius], blend);
       const first = [
-        lerp(q[0], [width - radius * (1 - k), 34 + radius], blend),
-        lerp(r[0], [width, 34 + radius * k], blend),
-        lerp(seam, [width, 34], blend),
+        lerp(q[0], [width - radius * (1 - k), join + radius], blend),
+        lerp(r[0], [width, join + radius * k], blend),
+        lerp(seam, [width, join], blend),
       ];
       const second = [
         lerp(r[1], [width, control], blend),
