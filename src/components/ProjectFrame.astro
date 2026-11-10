@@ -1,0 +1,24 @@
+<main id="page" aria-label="Project details" inert>
+  <iframe
+    id="project-frame"
+    title="Project content"
+    sandbox="allow-scripts allow-forms allow-popups"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+  ></iframe>
+  <div
+    class="frame-status"
+    id="frame-status"
+    role="status"
+    aria-live="polite"
+    hidden
+  >
+    <p id="frame-status-message">Loading project…</p>
+    <button type="button" id="frame-retry" hidden>
+      Try again
+    </button>
+    <a id="frame-direct" target="_blank" rel="noopener noreferrer" hidden>
+      Open project directly ↗
+    </a>
+  </div>
+</main>

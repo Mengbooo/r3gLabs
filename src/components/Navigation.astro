@@ -1,0 +1,107 @@
+<header class="navigation chrome" id="navigation" inert>
+  <svg
+    class="nav-shape"
+    viewBox="0 0 145 34"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M0 0 V68 H12 C12 49.222 27.222 34 46 34 H91 C122.034 34 116.461 0 145 0 Z" />
+  </svg>
+  <nav aria-label="Main navigation">
+    <button
+      class="monogram"
+      type="button"
+      aria-label="Open navigation"
+      aria-expanded="false"
+      aria-controls="nav-links"
+    >
+      <span>r3g</span>
+    </button>
+    <div class="nav-group" id="nav-links" inert>
+      <a href="https://r3actgo.com/" data-site-link>
+        <span>Index</span>
+      </a>
+      <a href="https://blog.r3actgo.com" data-site-link>
+        <span>Blog</span>
+      </a>
+      <button
+        type="button"
+        id="project-back"
+        aria-label="Back to gallery"
+        title="Back to gallery (Escape)"
+        hidden
+      >
+        <span aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M19 12H5m6-6-6 6 6 6" />
+          </svg>
+        </span>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- Bottom-right Labs tools: same horizontal shell and motion as the main nav. -->
+<div class="navigation navigation--bottom chrome" id="navigation-bottom" inert>
+  <svg
+    class="nav-shape"
+    viewBox="0 0 145 34"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M0 0 V68 H12 C12 49.222 27.222 34 46 34 H91 C122.034 34 116.461 0 145 0 Z" />
+  </svg>
+  <nav aria-label="Labs tools">
+    <button
+      class="monogram"
+      type="button"
+      aria-label="Open Labs navigation"
+      aria-expanded="false"
+      aria-controls="nav-links-bottom"
+    >
+      <span>Labs</span>
+    </button>
+    <div class="nav-group" id="nav-links-bottom" inert>
+      <button
+        type="button"
+        id="categories-toggle"
+        aria-expanded="false"
+        aria-controls="labs-categories"
+      >
+        <span>Categories</span>
+      </button>
+      <button
+        type="button"
+        id="list-toggle"
+        aria-expanded="false"
+        aria-controls="labs-list"
+      >
+        <span>List</span>
+      </button>
+    </div>
+  </nav>
+  <div class="labs-extension" inert>
+    <div class="labs-extension-content">
+      <section
+        class="labs-pane"
+        id="labs-categories"
+        aria-label="Project categories"
+        hidden
+      ></section>
+      <section
+        class="labs-pane"
+        id="labs-list"
+        aria-label="Project list"
+        hidden
+      ></section>
+    </div>
+  </div>
+</div>

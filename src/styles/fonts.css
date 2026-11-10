@@ -1,0 +1,21 @@
+@font-face {
+  font-family: 'Redaction 35';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/redaction-35.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Redaction 50';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/redaction-50.woff2') format('woff2');
+}
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+}

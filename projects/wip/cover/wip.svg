@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <rect width="1200" height="900" fill="#060709"/>
+  <rect x="42" y="42" width="1116" height="816" rx="24" fill="none" stroke="#f2f4f8" stroke-opacity=".2"/>
+  <text x="600" y="500" text-anchor="middle" font-family="Georgia,serif" font-size="180" letter-spacing="-12" fill="#f2f4f8">WIP</text>
+</svg>

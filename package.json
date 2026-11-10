@@ -1,0 +1,32 @@
+{
+  "name": "r3g-labs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4317",
+    "check": "astro check",
+    "build": "astro check && astro build",
+    "preview": "astro preview --host 127.0.0.1 --port 4317",
+    "test:e2e": "playwright test",
+    "test:catalog": "node --test tests/catalog.test.mjs",
+    "format": "prettier --write \"src/**/*.{ts,astro,css}\" \"tests/e2e/**/*.ts\" \"projects/**/*.json\" \"*.{json,mjs,ts}\""
+  },
+  "dependencies": {
+    "astro": "7.4.7",
+    "gsap": "3.12.5",
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.19.2",
+    "@types/three": "0.180.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.2",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+.DS_Store
+tests/artifacts/
+test-results/
+playwright-report/
+
+# Local reference files and unrelated generated media
+/prototype/
+/outputs/
+/index.html
+/README.md

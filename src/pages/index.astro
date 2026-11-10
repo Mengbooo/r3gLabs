@@ -1,0 +1,117 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import Loader from '../components/Loader.astro';
+import ProjectFrame from '../components/ProjectFrame.astro';
+import { getProjects } from '../lib/project-catalog';
+const projects = await getProjects();
+const categories = [
+  'All',
+  ...new Set(projects.map((project) => project.category)),
+];
+const count = (n: number) => `${n} ${n === 1 ? 'project' : 'projects'}`;
+---
+
+<SiteLayout>
+  <a class="skip-link" href="#index" id="skip">
+    Skip to project list
+  </a>
+  <div class="window-edge" aria-hidden="true"></div>
+  <canvas
+    id="gl"
+    tabindex="0"
+    aria-busy="true"
+    aria-label="Interactive project gallery. Use the Labs list for keyboard navigation."
+  ></canvas>
+  <Navigation />
+  <div id="legacy-controls" hidden>
+    <div id="chips" class="chrome" role="group" aria-label="Filter projects">
+      {categories.map((category) => (
+        <button
+          type="button"
+          class="chip"
+          data-category={category}
+          aria-pressed={category === 'All'}
+          aria-label={`${category}, ${count(category === 'All' ? projects.length : projects.filter((p) => p.category === category).length)}`}
+        >
+          {category}
+          <sup aria-hidden="true">
+            {category === 'All'
+              ? projects.length
+              : projects.filter((p) => p.category === category).length}
+          </sup>
+        </button>
+      ))}
+    </div>
+  </div>
+  <section
+    id="index"
+    class="chrome"
+    aria-busy="true"
+    aria-label="Project list"
+    tabindex="-1"
+    hidden
+  >
+    <div class="index-heading">
+      <span>Selected experiments</span>
+      <span id="index-count">{count(projects.length)}</span>
+    </div>
+    {projects.map((project, i) => (
+      <button type="button" class="index-row" data-project={project.id}>
+        {project.cover && (
+          <img
+            class="index-art"
+            src={project.cover}
+            alt=""
+            width="512"
+            height="384"
+            loading="eager"
+          />
+        )}
+        <span class="index-no">{String(i + 1).padStart(2, '0')}</span>
+        <span class="index-name">{project.title}</span>
+        <span class="index-category">{project.category}</span>
+        <span class="index-year">{project.year}</span>
+      </button>
+    ))}
+  </section>
+  <div id="label" aria-hidden="true"></div>
+  <p id="announce" class="sr-only" role="status" aria-live="polite"></p>
+  <p id="fallback-note" hidden>
+    Lightweight view · interactive 3D is unavailable on this device.
+  </p>
+  <ProjectFrame />
+  <Loader />
+  <noscript>
+    <style>
+      #loader,
+      #gl,
+      .chrome,
+      .skip-link {
+        display: none !important;
+      }
+      html,
+      body {
+        overflow: auto !important;
+      }
+    </style>
+    <main style="padding:64px 32px">
+      <h1>r3g Labs</h1>
+      <ul>
+        {projects.map((project) => (
+          <li>
+            <a href={project.entry}>{project.title} ↗</a>
+          </li>
+        ))}
+      </ul>
+    </main>
+  </noscript>
+  <script
+    type="application/json"
+    id="project-data"
+    set:html={JSON.stringify(projects).replaceAll('<', '\\u003c')}
+  />
+  <script>
+    import '../scripts/main';
+  </script>
+</SiteLayout>
