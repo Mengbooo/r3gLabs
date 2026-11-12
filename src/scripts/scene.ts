@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { kill, reducedMotion, tween } from './motion';
 import type { Project } from '../lib/project-types';
+import { repeatProjectIndices } from '../lib/stack';
 
 const GAP = 0.375,
   H = 1.25,
@@ -162,17 +163,14 @@ export class GalleryScene {
         blurred = new THREE.CanvasTexture(blur);
       blurred.minFilter = blurred.magFilter = THREE.LinearFilter;
       this.textures.push(image, blurred);
-      // A single WIP is one real card. Repetition only belongs to a multi-project stack.
-      const copies = this.projects.length === 1 ? 1 : 3;
-      for (let copy = 0; copy < copies; copy++)
-        this.createTile(i, i + copy * this.projects.length, image, blurred);
       progress(((i + 1) / this.projects.length) * 100);
     }
+    this.buildStack(this.projects.map((_, index) => index));
   }
 
   start(): void {
     this.ready = true;
-    this.intro.x = reducedMotion || this.projects.length === 1 ? 0 : -20;
+    this.intro.x = reducedMotion ? 0 : -20;
     tween(this.intro, { x: 0, duration: 2, ease: 'expo.out' });
     tween(this.world.scale, {
       x: 1,
@@ -186,13 +184,14 @@ export class GalleryScene {
 
   filter(category: string): void {
     this.setHover(null);
-    for (const tile of this.tiles)
-      tile.active =
-        category === 'All' || this.projects[tile.project].category === category;
+    const projects = this.projects.flatMap((project, index) =>
+      category === 'All' || project.category === category ? [index] : [],
+    );
+    this.buildStack(projects, true);
   }
 
   focus(project: number): void {
-    if (this.opened || this.projects.length < 2) return;
+    if (this.opened) return;
     const tile = this.tiles.find(
       (tile) => tile.project === project && tile.active,
     );
@@ -285,7 +284,7 @@ export class GalleryScene {
     }
     this.opened = null;
     this.placeCamera();
-    this.intro.x = reducedMotion || this.projects.length === 1 ? 0 : -20;
+    this.intro.x = reducedMotion ? 0 : -20;
     tween(this.intro, { x: 0, duration: 2, ease: 'expo.out', overwrite: true });
   }
 
@@ -305,6 +304,31 @@ export class GalleryScene {
     this.geometry.dispose();
     for (const texture of this.textures) texture.dispose();
     this.renderer.dispose();
+  }
+
+  private buildStack(projects: readonly number[], fadeIn = false): void {
+    // Copies share the original cover textures and geometry, not catalogue entries.
+    // Rebuild from the selected projects so filtering to one or two stays seamless.
+    for (const tile of this.tiles) {
+      kill(tile.inner.position);
+      this.world.remove(tile.holder);
+      tile.mesh.material.dispose();
+      tile.hit.material.dispose();
+    }
+    this.tiles = [];
+    repeatProjectIndices(projects).forEach((project, order) => {
+      this.createTile(
+        project,
+        order,
+        this.textures[project * 2],
+        this.textures[project * 2 + 1],
+      );
+      if (fadeIn) {
+        const tile = this.tiles[this.tiles.length - 1];
+        tile.opacity = 0;
+        tile.mesh.material.uniforms.uOpacity.value = 0;
+      }
+    });
   }
 
   private createTile(
@@ -415,10 +439,7 @@ export class GalleryScene {
       tile.opacity += ((tile.active ? 1 : 0) - tile.opacity) * 0.12;
       tile.mesh.material.uniforms.uOpacity.value = tile.opacity;
       if (this.opened) continue;
-      const x =
-          this.projects.length === 1
-            ? 0
-            : wrap(-half, half, (tile.order - position) * GAP),
+      const x = wrap(-half, half, (tile.order - position) * GAP),
         z = this.aspect < 1 ? -x * 6 : -x * this.aspect * 1.5;
       tile.holder.position.set(x, -(1 - tile.opacity) * 1.2, z);
       tile.holder.rotation.set(0, -Math.PI / 6, 0);

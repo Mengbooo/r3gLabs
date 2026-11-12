@@ -13,7 +13,8 @@
     "preview": "astro preview --host 127.0.0.1 --port 4317",
     "test:e2e": "playwright test",
     "test:catalog": "node --test tests/catalog.test.mjs",
-    "format": "prettier --write \"src/**/*.{ts,astro,css}\" \"tests/e2e/**/*.ts\" \"projects/**/*.json\" \"*.{json,mjs,ts}\""
+    "format": "prettier --write \"src/**/*.{ts,astro,css}\" \"tests/e2e/**/*.ts\" \"projects/**/*.json\" \"*.{json,mjs,ts}\"",
+    "test:stack": "node --test tests/stack.test.mjs"
   },
   "dependencies": {
     "astro": "7.4.7",
